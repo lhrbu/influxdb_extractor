@@ -4,7 +4,6 @@ from InfluxDBRowParsers.BPlusInfluxDBRowParser import BPlusInfluxDBRowParser
 from InfluxDBClientWriter import InfluxDBClientWriter
 from ExecutionTimer import ExecutionTimer
 
-execution_timer = ExecutionTimer()
 writer = InfluxDBClientWriter("python_test4")
 influxdb_row_parser:IInfluxDBRowParser = BPlusInfluxDBRowParser()
 
