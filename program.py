@@ -1,10 +1,12 @@
 import pandas
+from InfluxDBConnectionBuilders.MockInfluxDBConnectionBuilder import MockInfluxDBConnectionBuilder
 from InfluxDBRowParsers.IInfluxDBRowParser import IInfluxDBRowParser
 from InfluxDBRowParsers.BPlusInfluxDBRowParser import BPlusInfluxDBRowParser
 from InfluxDBClientWriter import InfluxDBClientWriter
 from ExecutionTimer import ExecutionTimer
 
-writer = InfluxDBClientWriter("python_test4")
+connection_builder = MockInfluxDBConnectionBuilder()
+writer = InfluxDBClientWriter(connection_builder,"python_test9")
 influxdb_row_parser:IInfluxDBRowParser = BPlusInfluxDBRowParser()
 
 

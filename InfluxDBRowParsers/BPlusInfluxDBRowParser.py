@@ -1,4 +1,4 @@
-from InfluxDBExtractors.IInfluxDBRowParser import IInfluxDBRowParser
+from InfluxDBRowParsers.IInfluxDBRowParser import IInfluxDBRowParser
 import pandas
 import influxdb_client
 from datetime import datetime
