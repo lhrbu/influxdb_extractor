@@ -2,34 +2,39 @@ import influxdb_client
 from influxdb_client.client.influxdb_client_async import InfluxDBClientAsync
 import asyncio
 
-from InfluxDBConnectionBuilders.IInfluxDBConnectionBuilder import IInfluxDBConnectionBuilder
 
 class InfluxDBClientAsyncWriter:
-    _client: InfluxDBClientAsync
+    _url:str
+    _token:str
     _bucket:str
-    _connectionBuilder:IInfluxDBConnectionBuilder
+    _org:str
+    _client: InfluxDBClientAsync
     
-    def __init__(self,connetionBuilder:IInfluxDBConnectionBuilder,bucket:str):
+    def __init__(this,url:str,token:str,bucket:str,org:str):
+        this._url = url
+        this._token = token
+        this._bucket = bucket
+        this._org = org
+
         sync_client = influxdb_client.InfluxDBClient(
-            url=connetionBuilder.Url,
-            token=connetionBuilder.Token,
-            org=connetionBuilder.Org
+            url=url,
+            token=token,
+            org=org
         )
-        self._bucket = bucket
+        this._bucket = bucket
 
         buckets_api = sync_client.buckets_api()
-        if not buckets_api.find_bucket_by_name(self._bucket):
-            buckets_api.create_bucket(bucket_name=self._bucket)
+        if not buckets_api.find_bucket_by_name(this._bucket):
+            buckets_api.create_bucket(bucket_name=this._bucket)
 
-        self._client = InfluxDBClientAsync(url=connetionBuilder.Url, token=connetionBuilder.Token, org=connetionBuilder.Org)
-        self._connectionBuilder = connetionBuilder
+        this._client = InfluxDBClientAsync(url=url, token=token, org=org)
 
-    def WritePoint(self,point:influxdb_client.Point):
-        write_api = self._client.write_api() 
-        return asyncio.create_task(write_api.write(bucket=self._bucket, org=self._connectionBuilder.Org, record=point))   
+    def WritePoint(this,point:influxdb_client.Point):
+        write_api = this._client.write_api() 
+        return asyncio.create_task(write_api.write(bucket=this._bucket, org=this._org, record=point))   
     
-    async def __aenter__(self): return self
+    async def __aenter__(this): return this
 
-    async def __aexit__(self, exc_type, exc, tb):
-        await self._client.close()
+    async def __aexit__(this, exc_type, exc, tb):
+        await this._client.close()
     

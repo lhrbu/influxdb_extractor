@@ -1,14 +1,15 @@
 import pandas
-from InfluxDBConnectionBuilders.MockInfluxDBConnectionBuilder import MockInfluxDBConnectionBuilder
 from InfluxDBRowParsers.IInfluxDBRowParser import IInfluxDBRowParser
 from InfluxDBRowParsers.BPlusInfluxDBRowParser import BPlusInfluxDBRowParser
 from InfluxDBClientWriter import InfluxDBClientWriter
 from ExecutionTimer import ExecutionTimer
 
-connection_builder = MockInfluxDBConnectionBuilder()
-writer = InfluxDBClientWriter(connection_builder,"python_test9")
-influxdb_row_parser:IInfluxDBRowParser = BPlusInfluxDBRowParser()
+url = "http://10.99.144.200:8086"
+token = "ojRH57p1ASsGOJzb7NEYXqsgxaOsQdDXdsdq0OdkIX3_7TJFPkHatk8ojy-IwaqdakSmLFZ2dq-eB4bMWPRZvQ=="
+org = "Raccoon"
 
+writer = InfluxDBClientWriter(url,token,"sync_test1",org)
+influxdb_row_parser:IInfluxDBRowParser = BPlusInfluxDBRowParser()
 
 with ExecutionTimer() as execution_timer:
    chunks = pandas.read_csv("data.csv",sep=",",header="infer",chunksize=10000)

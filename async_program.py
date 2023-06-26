@@ -1,10 +1,6 @@
 import asyncio,os, time
-from influxdb_client import InfluxDBClient, Point, WritePrecision
-from influxdb_client.client.influxdb_client_async import InfluxDBClientAsync
 import pandas
-from datetime import datetime
 from InfluxDBClientAsyncWriter import InfluxDBClientAsyncWriter
-from InfluxDBConnectionBuilders.MockInfluxDBConnectionBuilder import MockInfluxDBConnectionBuilder
 from InfluxDBRowParsers.BPlusInfluxDBRowParser import BPlusInfluxDBRowParser
 from InfluxDBRowParsers.IInfluxDBRowParser import IInfluxDBRowParser
 from ExecutionTimer import ExecutionTimer
@@ -12,10 +8,12 @@ from ExecutionTimer import ExecutionTimer
 
 MAX_CONCURRENT_COUNT = 16
 
-connection_builder = MockInfluxDBConnectionBuilder()
+url = "http://10.99.144.200:8086"
+token = "ojRH57p1ASsGOJzb7NEYXqsgxaOsQdDXdsdq0OdkIX3_7TJFPkHatk8ojy-IwaqdakSmLFZ2dq-eB4bMWPRZvQ=="
+org = "Raccoon"
 
 async def main():
-    async with (InfluxDBClientAsyncWriter(connection_builder,"python_test8")) as writer:
+    async with (InfluxDBClientAsyncWriter(url,token,"async_test1",org)) as writer:
         influxdb_row_parser:IInfluxDBRowParser = BPlusInfluxDBRowParser()
         buffered_tasks = []
         with ExecutionTimer() as execution_timer:
